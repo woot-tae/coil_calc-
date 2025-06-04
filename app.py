@@ -35,7 +35,7 @@ menu = st.sidebar.selectbox("계산기 종류를 선택하세요", [
     "4. 외경 제거 손실 계산"
 ])
 
-# 공통 비중 선택 함수
+# 📌 공통 비중 선택 함수
 def select_density():
     selected_alloy = st.selectbox("합금을 선택하세요", list(alloy_density.keys()))
     if selected_alloy == "기타 (직접 입력)":
@@ -69,11 +69,16 @@ elif menu == "3. 내경 제거 손실 계산":
     inner_d = st.number_input("내경 (mm)", min_value=0.0, value=300.0)
     thickness = st.number_input("소재 두께 (mm)", min_value=0.001, value=0.2)
     remove_thickness = st.number_input("내경 기준 제거 두께 (mm)", min_value=0.0, value=30.0)
+    width = st.number_input("현재 폭 (mm)", min_value=0.0, value=630.0)
+    density = select_density()
 
     d1 = inner_d
     d2 = inner_d + 2 * remove_thickness
-    loss_length = math.pi * (d2**2 - d1**2) / (4 * thickness)
-    st.success(f"제거 손실 길이: {loss_length:,.2f} mm → {loss_length/1000:.2f} m")
+    loss_length = math.pi * (d2**2 - d1**2) / (4 * thickness)  # mm
+    loss_weight = width * thickness * loss_length * density / 1000  # kg
+
+    st.success(f"손실 길이: {loss_length:,.2f} mm → {loss_length/1000:.2f} m")
+    st.success(f"손실 중량: {loss_weight:,.2f} kg")
 
 elif menu == "4. 외경 제거 손실 계산":
     st.header("4. 외경 제거 손실 계산")
@@ -81,8 +86,13 @@ elif menu == "4. 외경 제거 손실 계산":
     inner_d = st.number_input("내경 (mm)", min_value=0.0, value=300.0)
     thickness = st.number_input("소재 두께 (mm)", min_value=0.001, value=0.2)
     remove_thickness = st.number_input("외경 기준 제거 두께 (mm)", min_value=0.0, value=30.0)
+    width = st.number_input("현재 폭 (mm)", min_value=0.0, value=630.0)
+    density = select_density()
 
     D1 = outer_d
     D2 = outer_d - 2 * remove_thickness
-    loss_length = math.pi * (D1**2 - D2**2) / (4 * thickness)
-    st.success(f"제거 손실 길이: {loss_length:,.2f} mm → {loss_length/1000:.2f} m")
+    loss_length = math.pi * (D1**2 - D2**2) / (4 * thickness)  # mm
+    loss_weight = width * thickness * loss_length * density / 1000  # kg
+
+    st.success(f"손실 길이: {loss_length:,.2f} mm → {loss_length/1000:.2f} m")
+    st.success(f"손실 중량: {loss_weight:,.2f} kg")
