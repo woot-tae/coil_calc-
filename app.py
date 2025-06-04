@@ -28,11 +28,20 @@ alloy_density = {
     "기타 (직접 입력)": None
 }
 
-# 📌 공통 비중 선택 함수
-def select_density():
-    selected_alloy = st.selectbox("합금을 선택하세요", list(alloy_density.keys()))
+# 📌 고유 key를 적용한 비중 선택 함수
+def select_density(key_suffix):
+    selected_alloy = st.selectbox(
+        "합금을 선택하세요", 
+        list(alloy_density.keys()), 
+        key=f"alloy_select_{key_suffix}"
+    )
     if selected_alloy == "기타 (직접 입력)":
-        return st.number_input("비중을 입력하세요 (g/cm³)", min_value=0.0, value=8.9)
+        return st.number_input(
+            "비중을 입력하세요 (g/cm³)", 
+            min_value=0.0, 
+            value=8.9, 
+            key=f"density_input_{key_suffix}"
+        )
     else:
         return alloy_density[selected_alloy]
 
@@ -49,7 +58,7 @@ with tab1:
     width = st.number_input("폭 (mm)", min_value=0.0, value=630.0, key="w1")
     thickness = st.number_input("두께 (mm)", min_value=0.0, value=0.25, key="t1")
     length = st.number_input("길이 (m)", min_value=0.0, value=3500.0, key="l1")
-    density = select_density()
+    density = select_density("tab1")
 
     weight = width * thickness * length * density / 1000
     st.success(f"단중: {weight:,.2f} kg")
@@ -59,7 +68,7 @@ with tab2:
     width = st.number_input("폭 (mm)", min_value=0.0, value=630.0, key="w2")
     thickness = st.number_input("두께 (mm)", min_value=0.0, value=0.25, key="t2")
     weight = st.number_input("단중 (kg)", min_value=0.0, value=3800.0, key="wt2")
-    density = select_density()
+    density = select_density("tab2")
 
     length = weight * 1000 / (width * thickness * density)
     st.success(f"길이: {length:,.2f} m")
@@ -71,7 +80,7 @@ with tab3:
     thickness = st.number_input("소재 두께 (mm)", min_value=0.001, value=0.2, key="t3")
     remove_thickness = st.number_input("내경 기준 제거 두께 (mm)", min_value=0.0, value=30.0, key="rt3")
     width = st.number_input("현재 폭 (mm)", min_value=0.0, value=630.0, key="w3")
-    density = select_density()
+    density = select_density("tab3")
 
     d1 = inner_d
     d2 = inner_d + 2 * remove_thickness
@@ -88,7 +97,7 @@ with tab4:
     thickness = st.number_input("소재 두께 (mm)", min_value=0.001, value=0.2, key="t4")
     remove_thickness = st.number_input("외경 기준 제거 두께 (mm)", min_value=0.0, value=30.0, key="rt4")
     width = st.number_input("현재 폭 (mm)", min_value=0.0, value=630.0, key="w4")
-    density = select_density()
+    density = select_density("tab4")
 
     D1 = outer_d
     D2 = outer_d - 2 * remove_thickness
