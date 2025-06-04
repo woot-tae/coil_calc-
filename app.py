@@ -75,7 +75,7 @@ elif menu == "3. 내경 제거 손실 계산":
     d1 = inner_d
     d2 = inner_d + 2 * remove_thickness
     loss_length = math.pi * (d2**2 - d1**2) / (4 * thickness)  # mm
-    loss_weight = width * thickness * loss_length * density / 1000  # kg
+    loss_weight = (width / 10) * (thickness / 10) * (loss_length / 10) * density / 1000  # kg
 
     st.success(f"손실 길이: {loss_length:,.2f} mm → {loss_length/1000:.2f} m")
     st.success(f"손실 중량: {loss_weight:,.2f} kg")
@@ -92,7 +92,7 @@ elif menu == "4. 외경 제거 손실 계산":
     D1 = outer_d
     D2 = outer_d - 2 * remove_thickness
     loss_length = math.pi * (D1**2 - D2**2) / (4 * thickness)  # mm
-    loss_weight = width * thickness * loss_length * density / 1000  # kg
+    loss_weight = (width / 10) * (thickness / 10) * (loss_length / 10) * density / 1000  # kg
 
     st.success(f"손실 길이: {loss_length:,.2f} mm → {loss_length/1000:.2f} m")
     st.success(f"손실 중량: {loss_weight:,.2f} kg")
